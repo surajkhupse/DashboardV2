@@ -1,0 +1,34 @@
+:root {
+  --primary-color: #4caf50;
+  --secondary-color: #ff9800;
+  --background-color: #f0f5f9;
+  --text-color: #333333;
+  --font-family: 'Poppins', sans-serif !important;
+  --border-radius: 4px;
+  --transition-duration: 0.3s;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  width: 100%;
+  height: auto;
+}
+
+.MuiTypography-root{
+  font-family: var(--font-family) !important;
+  color: var(--text-color);
+}
+.Mui-selected {
+  color: #14147d !important;
+  font-weight: 600;
+  font-size: 12px !important  ;
+}
+.MuiTab-root {
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
