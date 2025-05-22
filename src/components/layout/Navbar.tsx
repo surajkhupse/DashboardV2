@@ -2,7 +2,12 @@ import React from "react";
 import { Box, AppBar, Typography, Stack, Link, Breadcrumbs, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
-const Navbar = () => {
+type NavbarProps = {
+  onSearchChange: (query: string) => void;
+};
+
+
+const Navbar: React.FC<NavbarProps> = ({onSearchChange}) => {
 
     const handleClick = (event: any) => {
         event.preventDefault();
@@ -36,6 +41,7 @@ const Navbar = () => {
                                 borderRadius: '8px',
                             },
                         }}
+                           onChange={(e) => onSearchChange(e.target.value)} 
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
