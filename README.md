@@ -1,5 +1,6 @@
 # DashboardV2
-<img src="public/logo.png" alt="DashboardV2 Logo" width="80" />
+<img width="1468" alt="Screenshot 2025-05-22 at 11 58 19 PM" src="https://github.com/user-attachments/assets/c9825e46-f2f8-4432-ba21-e3d487c26b23" />
+
 A modern dashboard application built with **React**, **TypeScript**, **Vite**, and **Material-UI**. This project features a modular layout, dynamic widgets, and a responsive UI.
 
 ## Features
