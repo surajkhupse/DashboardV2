@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+# DashboardV2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern dashboard application built with **React**, **TypeScript**, **Vite**, and **Material-UI**. This project features a modular layout, dynamic widgets, and a responsive UI.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 + TypeScript + Vite for fast development
+- Material-UI components and theming
+- Modular dashboard layout with add/remove widgets
+- Search functionality for widgets
+- Responsive design
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── DashboardLayout.tsx
+│   │   │   └── Navbar.tsx
+│   │   └── widgets/
+│   │       ├── addWidgetDrawer.tsx
+│   │       └── managedWidgetDrawer.tsx
+│   ├── pages/
+│   │   └── Dashboard.tsx
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── ...
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+- Node.js (v18 or newer recommended)
+- npm
+
+### Installation
+
+```sh
+npm install
 ```
+
+### Development
+
+Start the development server:
+
+```sh
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Build
+
+To build for production:
+
+```sh
+npm run build
+```
+
+### Lint
+
+To lint the codebase:
+
+```sh
+npm run lint
+```
+
+## Customization
+
+- Add new widgets in [`DashboardLayout.tsx`](src/components/layout/DashboardLayout.tsx)
+- Update the dashboard layout or navigation in [`Navbar.tsx`](src/components/layout/Navbar.tsx)
