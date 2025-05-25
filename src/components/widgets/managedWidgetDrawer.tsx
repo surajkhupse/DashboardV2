@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
+import { useDashboardStore } from "../../stores/useDashboardStore"; 
 
 type Widget = {
   title: string;
@@ -26,7 +27,6 @@ type ManagedWidgetDrawerProps = {
   open: boolean;
   onClose: () => void;
   managedData: ManagedCategory[];
-  onAddWidget?: (category: string, widget: Widget) => void;
 };
 
 type TabPanelProps = {
@@ -39,12 +39,14 @@ const ManagedWidgetDrawer = ({
   open,
   onClose,
   managedData,
-  onAddWidget,
 }: ManagedWidgetDrawerProps) => {
   const [value, setValue] = React.useState(0);
   const [selectedWidgets, setSelectedWidgets] = React.useState<{
     [category: string]: string[];
   }>({});
+
+  const addWidget = useDashboardStore((state) => state.addWidget);
+  const dashboardWidgets = useDashboardStore((state) => state.dashboardWidgets);
 
   const handleToggle = (category: string, label: string) => {
     setSelectedWidgets((prev) => {
@@ -135,6 +137,31 @@ const ManagedWidgetDrawer = ({
       );
   };
 
+  const handleConfirm = () => {
+    Object.entries(selectedWidgets).forEach(([category, widgets]) => {
+      widgets.forEach((widgetTitle) => {
+        const widget = managedData
+          .find((item) => item.category === category)
+          ?.widgets.find((w) => w.title === widgetTitle);
+
+        const alreadyExists = dashboardWidgets
+          .find((d) => d.category === category)
+          ?.widgets.some((w) => w.title === widgetTitle);
+
+        if (widget && !alreadyExists) {
+          addWidget(category, {
+            ...widget,
+            id: `${category}-${widgetTitle}-${Date.now()}`,
+            type: "no-data", // Assuming you're adding "no-data" widgets here
+            content: "",
+            image: "",
+          });
+        }
+      });
+    });
+    onClose();
+  };
+
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Stack sx={{ width: 700 }}>
@@ -207,11 +234,12 @@ const ManagedWidgetDrawer = ({
             display: "flex",
             justifyContent: "flex-end",
             p: 2,
-            position: "sticky",
+            position: "absolute",
             bottom: 0,
             backgroundColor: "#fff",
             width: "100%",
             borderTop: "1px solid #eee",
+            right: 0,
           }}
         >
           <Stack direction="row" spacing={2}>
@@ -231,21 +259,7 @@ const ManagedWidgetDrawer = ({
             </Button>
             <Button
               variant="contained"
-              onClick={() => {
-                Object.entries(selectedWidgets).forEach(
-                  ([category, widgets]) => {
-                    widgets.forEach((widgetTitle) => {
-                      const widget = managedData
-                        .find((item) => item.category === category)
-                        ?.widgets.find((w) => w.title === widgetTitle);
-                      if (widget && onAddWidget) {
-                        onAddWidget(category, widget);
-                      }
-                    });
-                  }
-                );
-                onClose();
-              }}
+              onClick={handleConfirm}
               sx={{
                 backgroundColor: "#0b1444",
                 color: "#fff",

@@ -9,6 +9,9 @@ import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import AddWidgetDrawer from "../widgets/addWidgetDrawer";
 import ManagedWidgetDrawer from "../widgets/managedWidgetDrawer";
 
+import { useEffect } from "react";
+import { useDashboardStore } from "../../stores/useDashboardStore";
+
 type PieWidget = {
   id: string;
   title: string;
@@ -89,32 +92,20 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ searchQuery }) => {
 
   const [openAddWidgetDrawer, setOpenAddWidgetDrawer] = useState(false);
   const [openManagedWidgetDrawer, setOpenManagedWidgetDrawer] = useState(false);
-  const [dashboardWidgets, setDashboardWidgets] =
-    useState<DashboardSection[]>(widgetsData);
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
+  const { dashboardWidgets, addWidget, removeWidget, setWidgets } = useDashboardStore();
+
+  useEffect(() => {
+    setWidgets(widgetsData);
+  }, []);
+
   const handleRemoveWidget = (category: string, widgetId: string) => {
-    setDashboardWidgets((prev: any) => {
-      const updatedWidgets = prev.map((section: any) => {
-        if (section.category === category) {
-          return {
-            ...section,
-            widgets: section.widgets.filter(
-              (widget: any) => widget.id !== widgetId
-            ),
-          };
-        }
-        return section;
-      });
-      return [...updatedWidgets];
-    });
+    removeWidget(category, widgetId);
   };
 
-  const handleAddWidget = (
-    widgetName: string,
-    widgetText: string,
-    category: string
-  ) => {
+  const handleAddWidget = (widgetName: string, widgetText: string, category: string) => {
     const newWidget: NoDataWidget = {
       id: Date.now().toString(),
       type: "no-data",
@@ -122,17 +113,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ searchQuery }) => {
       content: widgetText,
       image: "",
     };
-
-    setDashboardWidgets((prev) =>
-      prev.map((section) =>
-        section.category === category
-          ? {
-            ...section,
-            widgets: [...section.widgets, newWidget],
-          }
-          : section
-      )
-    );
+    addWidget(category, newWidget);
   };
 
   const filterWidgets = (widget: Widget) => {
@@ -161,6 +142,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ searchQuery }) => {
       widgets: section.widgets.filter(filterWidgets),
     }))
     .filter((section) => section.widgets.length > 0);
+
+    const handleRefresh = () => {
+  setWidgets(widgetsData);
+};
 
   return (
     <>
@@ -194,6 +179,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ searchQuery }) => {
           <IconButton
             aria-label="refresh"
             size="small"
+            onClick={handleRefresh}
             sx={{
               backgroundColor: "#ffffff",
               color: "#677581",
@@ -413,8 +399,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ searchQuery }) => {
       <AddWidgetDrawer
         open={openAddWidgetDrawer}
         onClose={() => {
-          setOpenAddWidgetDrawer(false);
-          setSelectedCategory(null);
+          setTimeout(() => {
+            setOpenAddWidgetDrawer(false);
+            setSelectedCategory(null);
+          }, 300);
         }}
         onAddWidget={handleAddWidget}
         selectedCategory={selectedCategory}
